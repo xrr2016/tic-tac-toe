@@ -2,11 +2,14 @@ html, body{
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   height: 100%;
   margin: 0;
   background-color: #f5f5f5;
 }
-
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 ol, ul {
   padding-left: 30px;
 }
@@ -17,23 +20,23 @@ ol, ul {
   display: table;
 }
 
-.status {
-  margin-bottom: 10px;
+.game-status {
+  margin-bottom: 20px;
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  font-size: 42px;
+  font-weight: bolder;
+  line-height: 80px;
+  height: 80px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 80px;
 }
 
 .square:focus {
@@ -47,8 +50,26 @@ ol, ul {
 .game {
   display: flex;
   flex-direction: row;
+  margin-top: -40px;
 }
 
 .game-info {
   margin-left: 20px;
+  font-size: 16px;
+}
+
+.game-board {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 240px;
+}
+
+.game-errors {
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: red;
+  text-align: center;
 }

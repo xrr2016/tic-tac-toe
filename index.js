@@ -9,31 +9,37 @@ const ReactDOM = window.ReactDOM
 //   }
 // }
 
+function randomID () {
+  let str = ''
+  for (; str.length < 10; str += Math.random().toString(36).substr(2)) {}
+  return str.substr(0, 10)
+}
+
 class Square extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      value: null
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick (e) {
+    e.preventDefault()
+    this.setState({value: 'X'})
+  }
   render () {
-    return (<button className='square'>{}</button>)
+    return (<button className='square' onClick={this.handleClick} >{this.state.value}</button>)
   }
 }
 
 class Board extends React.Component {
-  renderSquare () {
-    return (<Square />)
-  }
   render () {
-    const status = '下一步: X'
-    return (
-      <div>
-        <div className='status'>{status}</div>
-        <div className='board-row'>
-          {this.renderSquare(0)}{this.renderSquare(1)}{this.renderSquare(2)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(3)}{this.renderSquare(4)}{this.renderSquare(5)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(6)}{this.renderSquare(7)}{this.renderSquare(8)}
-        </div>
-      </div>)
+    // const status = '下一步: X'
+    const squares = []
+    for (let i = 0; i < 9; i++) {
+      squares.push(<Square key={randomID()} />)
+    }
+    return (<div className='game-board'>{[...squares]}</div>)
   }
 }
 
@@ -41,9 +47,7 @@ class Game extends React.Component {
   render () {
     return (
       <div className='game'>
-        <div className='game-board'>
-          <Board />
-        </div>
+        <Board />
         <div className='game-info'>
           {/* <div>{staus}<div/> */}
           {/* <div>{staus}<div/> */}
@@ -54,9 +58,15 @@ class Game extends React.Component {
 }
 
 class Errors extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      msg: 'Something Wrong!'
+    }
+  }
   render () {
     return (
-      <div className='game-errors'>{}</div>
+      <div className='game-errors'>{this.state.msg}</div>
     )
   }
 }
@@ -69,8 +79,8 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <Errors />
         <Game />
+        <Errors />
       </div>
     )
   }
