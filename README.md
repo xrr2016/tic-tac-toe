@@ -2,6 +2,6 @@
 
 ![Demo](./demo/game.gif)
 
-[PLAY]()
+[PLAY](http://xiaoranran.site/tic_tac_toe/)
 
 react base

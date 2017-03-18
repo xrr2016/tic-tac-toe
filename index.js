@@ -72,6 +72,7 @@ class Game extends React.Component {
     super()
     this.state = {
       history: [{squares: Array(9).fill('')}],
+      stepNumber: 0,
       xIsNext: true
     }
   }
@@ -87,13 +88,31 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares
       }]),
+      stepNumber: history.length,
       xIsNext: !this.state.xIsNext
+    })
+  }
+  jumpTo (step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2)
+    })
+  }
+  replay () {
+    this.setState({
+      history: [{squares: Array(9).fill('')}],
+      stepNumber: 0,
+      xIsNext: true
     })
   }
   render () {
     const history = this.state.history
-    const current = history[history.length - 1]
+    const current = history[this.state.stepNumber]
     const winner = calculateWinner(current.squares)
+    const moves = history.map((step, move) => {
+      const desc = move ? `第${move}步` : '游戏开始'
+      return (<li key={move}><a href='#' onClick={() => this.jumpTo(move)}>{desc}</a></li>)
+    })
     let status
     if (winner) {
       status = `赢的是 ${winner}`
@@ -107,7 +126,8 @@ class Game extends React.Component {
         </div>
         <div className='game-info'>
           <Status status={status} />
-          <ol>{''}</ol>
+          <ul>{moves}</ul>
+          <div className='game-replay' onClick={this.replay.bind(this)}>重新开始</div>
         </div>
       </div>
     )

@@ -11,7 +11,7 @@ html, body {
   box-sizing: inherit;
 }
 ol, ul {
-  padding-left: 30px;
+  padding-left: 10px;
 }
 
 .board-row:after {
@@ -54,10 +54,9 @@ ol, ul {
 }
 
 .game-info {
-  width: 200px;
   margin-left: 40px;
   font-size: 16px;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .game-board {
@@ -74,4 +73,16 @@ ol, ul {
   font-size: 16px;
   color: red;
   text-align: center;
+}
+
+.game-replay {
+  width: 100px;
+  border: 1px solid #999;
+  padding: 6px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+.game-replay:hover {
+  color: #999;
 }
