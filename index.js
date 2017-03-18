@@ -43,51 +43,78 @@ function Square (props) {
   )
 }
 // 棋盘组件
-class Board extends React.Component {
+function Board (props) {
+  function renderSquare (i) {
+    const squares = props.squares
+    return <Square value={squares[i]} onClick={() => props.onClick(i)} />
+  }
+  return (
+    <div className='game-board'>
+      {renderSquare(0)}
+      {renderSquare(1)}
+      {renderSquare(2)}
+      {renderSquare(3)}
+      {renderSquare(4)}
+      {renderSquare(5)}
+      {renderSquare(6)}
+      {renderSquare(7)}
+      {renderSquare(8)}
+    </div>
+  )
+}
+// 信息提示组件
+function Status (props) {
+  return (<div>{props.status}</div>)
+}
+// 游戏
+class Game extends React.Component {
   constructor () {
     super()
     this.state = {
-      squares: Array(9).fill(''),
+      history: [{squares: Array(9).fill('')}],
       xIsNext: true
     }
   }
   handleClick (i) {
-    const squares = this.state.squares.slice()
+    const history = this.state.history
+    const current = history[history.length - 1]
+    const squares = current.squares.slice()
     if (calculateWinner(squares) || squares[i]) {
       return
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O'
     this.setState({
-      squares: squares,
+      history: history.concat([{
+        squares: squares
+      }]),
       xIsNext: !this.state.xIsNext
     })
   }
   render () {
-    const winner = calculateWinner(this.state.squares)
+    const history = this.state.history
+    const current = history[history.length - 1]
+    const winner = calculateWinner(current.squares)
     let status
     if (winner) {
-      status = `Winner is ${winner}`
+      status = `赢的是 ${winner}`
     } else {
       status = `下一步是: ${this.state.xIsNext ? 'X' : 'O'}`
     }
     return (
-      <div>
-        <Status status={status} />
+      <div className='game'>
         <div className='game-board'>
-          {this.state.squares.map((val, index) => {
-            return <Square key={index} value={val} onClick={this.handleClick.bind(this, index)} />
-          })}
+          <Board squares={current.squares} onClick={i => this.handleClick(i)} />
+        </div>
+        <div className='game-info'>
+          <Status status={status} />
+          <ol>{''}</ol>
         </div>
       </div>
     )
   }
 }
-// 信息提示组件
-function Status (props) {
-  return (<div className='game-status'>{props.status}</div>)
-}
 
 ReactDOM.render(
-  <Board />,
+  <Game />,
   document.getElementById('root')
 )

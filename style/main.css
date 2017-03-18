@@ -22,6 +22,7 @@ ol, ul {
 
 .game-status {
   margin-bottom: 20px;
+  color: black;
 }
 
 .square {
@@ -49,13 +50,14 @@ ol, ul {
 
 .game {
   display: flex;
-  flex-direction: row;
-  margin-top: -40px;
+  margin-top: -100px;
 }
 
 .game-info {
-  margin-left: 20px;
+  width: 200px;
+  margin-left: 40px;
   font-size: 16px;
+  text-align: center;
 }
 
 .game-board {
