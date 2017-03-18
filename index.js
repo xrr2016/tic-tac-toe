@@ -8,84 +8,57 @@ const ReactDOM = window.ReactDOM
 //     )
 //   }
 // }
-
+//  生成随机id值
 function randomID () {
   let str = ''
   for (; str.length < 10; str += Math.random().toString(36).substr(2)) {}
   return str.substr(0, 10)
 }
-
-class Square extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      value: null
-    }
-    this.handleClick = this.handleClick.bind(this)
-  }
-  handleClick (e) {
-    e.preventDefault()
-    this.setState({value: 'X'})
-  }
-  render () {
-    return (<button className='square' onClick={this.handleClick} >{this.state.value}</button>)
-  }
+// 方格组件
+function Square (props) {
+  return (
+    <button className='square' onClick={() => props.onClick()}>
+      {props.value}
+    </button>
+  )
 }
-
+// 棋盘组件
 class Board extends React.Component {
-  render () {
-    // const status = '下一步: X'
-    const squares = []
-    for (let i = 0; i < 9; i++) {
-      squares.push(<Square key={randomID()} />)
+  constructor () {
+    super()
+    this.state = {
+      squares: ['O', null, 'X', 'X', 'X', 'O', 'O', null, null],
+      xIsNext: true
     }
-    return (<div className='game-board'>{[...squares]}</div>)
   }
-}
-
-class Game extends React.Component {
+  handleClick (i) {
+    const squares = this.state.squares.slice()
+    squares[i] = this.state.xIsNext ? 'X' : 'O'
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext
+    })
+  }
   render () {
+    const status = `下一步是: ${this.state.xIsNext ? 'X' : 'O'}`
     return (
-      <div className='game'>
-        <Board />
-        <div className='game-info'>
-          {/* <div>{staus}<div/> */}
-          {/* <div>{staus}<div/> */}
+      <div>
+        <Status status={status} />
+        <div className='game-board'>
+          {this.state.squares.map(val => {
+            return <Square key={randomID()} value={val} onClick={this.handleClick.bind(this)} />
+          })}
         </div>
       </div>
     )
   }
 }
-
-class Errors extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      msg: 'Something Wrong!'
-    }
-  }
-  render () {
-    return (
-      <div className='game-errors'>{this.state.msg}</div>
-    )
-  }
+// 信息提示组件
+function Status (props) {
+  return (<div className='game-status'>{props.status}</div>)
 }
 
-class App extends React.Component {
-  constructor () {
-    super()
-    this.state = {}
-  }
-  render () {
-    return (
-      <div>
-        <Game />
-        <Errors />
-      </div>
-    )
-  }
-}
 ReactDOM.render(
-  <App />,
+  <Board />,
   document.getElementById('root')
 )
